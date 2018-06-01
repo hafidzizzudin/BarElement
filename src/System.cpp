@@ -214,15 +214,45 @@ namespace adhocpp {
 
 	}
 
-	void System::showStress(){
+	void System::showStressEng(){
 		std::ios_base::fmtflags f( std::cout.flags() );
-		std::cout <<"STRESS OF THE SYSTEM :" << std::endl;
+		std::cout <<"ENGINEERING STRESS OF THE SYSTEM :" << std::endl;
 		for (unsigned i=0;i<(*this->vecElement).size();i++){
-			std::cout <<"Stress in element "<< i+1 <<"	: " << std::setw(7) << std::fixed << std::setprecision(4) << (*this->vecElement)[i].getStress() << " GPa" << std::endl;
+			std::cout <<"Eng stress in element "<< std::setw(4) << i+1 <<" :" << std::setw(7) << std::fixed << std::setprecision(4) << (*this->vecElement)[i].getStressEng() << " GPa" << std::endl;
 		}
 		std::cout.flags( f );
 		std::cout << std::endl;
-	}//Show Stress
+	}//Show Stress Eng
+
+	void System::showStressTrue(){
+		std::ios_base::fmtflags f( std::cout.flags() );
+		std::cout <<"TRUE STRESS OF THE SYSTEM :" << std::endl;
+		for (unsigned i=0;i<(*this->vecElement).size();i++){
+			std::cout <<"True stress in element "<<std::setw(4) << i+1 <<" :" << std::setw(7) << std::fixed << std::setprecision(4) << (*this->vecElement)[i].getStressTrue() << " GPa" << std::endl;
+		}
+		std::cout.flags( f );
+		std::cout << std::endl;
+	}//Show Stress true
+
+	void System::showStrainEng(){
+		std::ios_base::fmtflags f( std::cout.flags() );
+		std::cout <<"ENGINEERING STRAIN OF THE SYSTEM :" << std::endl;
+		for (unsigned i=0;i<(*this->vecElement).size();i++){
+			std::cout <<"Eng Strain in element "<< std::setw(4) << i+1 <<" :" << std::setw(7) << std::fixed << std::setprecision(4) << (*this->vecElement)[i].getStrainEng() << std::endl;
+		}
+		std::cout.flags( f );
+		std::cout << std::endl;
+	}//Show Strain Eng
+
+	void System::showStrainTrue(){
+		std::ios_base::fmtflags f( std::cout.flags() );
+		std::cout <<"TRUE STRAIN OF THE SYSTEM :" << std::endl;
+		for (unsigned i=0;i<(*this->vecElement).size();i++){
+			std::cout <<"True Strain in element "<< std::setw(4) << i+1  << " :" << std::setw(7) << std::fixed << std::setprecision(4) << (*this->vecElement)[i].getStrainTrue() << std::endl;
+		}
+		std::cout.flags( f );
+		std::cout << std::endl;
+	}//Show Strain True
 
 	void System::calculateForce(vector<int> exept){
 		std::sort(exept.begin(),exept.end());
@@ -249,7 +279,7 @@ namespace adhocpp {
 		}
 	}//Calculate Force
 
-	void System::calculateStress(){
+	void System::calculateStressStrain(){
 		for (unsigned i=0;i<(*this->vecElement).size();i++){
 			double x1,y1,z1,x2,y2,z2;
 			x1 = (*this->vecElement)[i].getNode1()->getX() + (*this->vecElement)[i].getNode1()->getUX();
@@ -265,8 +295,12 @@ namespace adhocpp {
 			double lnew = pow(pow(dx,2)+pow(dy,2)+pow(dz,2),0.5);
 
 			double strain = fabs((lnew-(*this->vecElement)[i].getLength()))/(*this->vecElement)[i].getLength();
+			double trueStrain = log(1+strain);
 
-			(*this->vecElement)[i].setStress( (*this->vecElement)[i].getE()*strain );
+			(*this->vecElement)[i].setStrainEng(strain);
+			(*this->vecElement)[i].setStrainTrue(trueStrain);
+			(*this->vecElement)[i].setStressEng( (*this->vecElement)[i].getE()*strain );
+			(*this->vecElement)[i].setStressTrue( (*this->vecElement)[i].getStressEng()*(1+strain) );
 		}
 
 	}//Calculate Stress

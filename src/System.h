@@ -34,10 +34,16 @@ public:
 	void setForce (int, double);
 	void showForce ();
 	void showDisplacement();
-	void showStress();
+
+	void showStressEng();
+	void showStressTrue();
+
+	void showStrainEng();
+	void showStrainTrue();
+
 	void calculateDis(std::vector <int>);
 	void calculateForce(std::vector <int>);
-	void calculateStress();
+	void calculateStressStrain();
 
 	std::vector<std::vector<double> > getStifMat();
 	std::vector <double> getForce();

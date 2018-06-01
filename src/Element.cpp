@@ -137,17 +137,42 @@ Node* Element::getNode2(){
 	return this->second;
 }
 
-double Element::getStress(){
-	return this->stress;
+double Element::getStressEng(){
+	return this->stressEng;
 }//Get Stress
+
+double Element::getStressTrue(){
+	return this->stressTrue;
+}//get STress true
+
+double Element::getStrainEng(){
+	return this->strainEng;
+}//get strain eng
+
+double Element::getStrainTrue(){
+	return this->strainTrue;
+}//get strain true
+
+
+void Element::setStressEng(double sigma){
+	this->stressEng = sigma;
+}//Set Stress eng
+
+void Element::setStressTrue(double sigma){
+	this->stressTrue = sigma;
+}//set true stress
+
+void Element::setStrainEng(double strain){
+	this->strainEng = strain;
+}//set eng strain
+
+void Element::setStrainTrue(double strain){
+	this->strainTrue = strain;
+}// set true strain
 
 double Element::getE(){
 	return this->E;
 }//Get Modulus young;
-
-void Element::setStress(double sigma){
-	this->stress = sigma;
-}//Set Stress
 
 vector<vector<double> > Element::getK(){
 	return this->K;

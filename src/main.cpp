@@ -1,11 +1,3 @@
-//============================================================================
-// Name        : BAR.cpp
-// Author      : hafidz
-// Version     :
-// Copyright   : Your copyright notice
-// Description : Hello World in C++, Ansi-style
-//============================================================================
-
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -39,7 +31,7 @@ int main() {
 
 	//NODE CREATING
 	ifstream inputFile;
-	inputFile.open("inputBar.dat");
+	inputFile.open("/home/hafidz/workspace/BAR/inputBar.dat");
 	vector <adhocpp::Node> node;
 	inputNode(inputFile,node);
 
@@ -47,12 +39,10 @@ int main() {
 	vector <adhocpp::Element> element;
 	inputElement(inputFile,element,node);
 
-
 	//MATRIX SYSTEM
 	adhocpp::System Sys(&node,&element);
-	Sys.showStifMat();
-	Sys.checkSymmetry();
-
+	//Sys.showStifMat();
+	//Sys.checkSymmetry();
 
 	//BOUNDARY CONDITION displacement (mm, ms, GPa, kN, kg)
 	vector <int> exceptForceId;
@@ -63,17 +53,21 @@ int main() {
 
 	//CALCULATE DISPLACEMENT SYSTEM
 	Sys.calculateDis(exceptForceId);
-	Sys.showDisplacement();
+	//Sys.showDisplacement();
 
 	//CALCULATE FORCE SYSTEM
 	Sys.calculateForce(exceptForceId);
-	Sys.showForce();
+	//Sys.showForce();
 
 	//CALCULATE STRESS SYSTEM
-	Sys.calculateStress();
-	Sys.showStress();
+	Sys.calculateStressStrain();
+	//Sys.showStressEng();
+	//Sys.showStressTrue();
+	//Sys.showStrainEng();
+	//Sys.showStrainTrue();
 
 	cout << "\n\033[1;32Time for calculation : \033[0m" << (double)(clock()-tStart)/CLOCKS_PER_SEC << " sec" << endl;
+
 	inputFile.close(); return 0;
 }
 
